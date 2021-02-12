@@ -1,0 +1,49 @@
+﻿@page
+@model DiegoOrdonezBecerril_18300218_RazorPages.Pages.Cursos.IndexModel
+@{
+    ViewData["Title"] = "Cursos";
+}
+
+<div class="container row">
+    <div class="col-6">
+        <h2 class="text-info">Listado de cursos</h2>
+    </div>
+    <div class="col-6 text-right">
+        <a asp-page="Create" class="btn btn-primary">Crear un nuevo curso</a>
+    </div>
+</div>
+<form method="post">
+    @if (Model.Cursos.Count() > 0)
+    {
+        <br />
+        <table class="table table-striped border">
+            <thead>
+                <tr class="table-secondary">
+                    <th>@Html.DisplayNameFor(model => model.Cursos.FirstOrDefault().Nombre)</th>
+                    <th>@Html.DisplayNameFor(model => model.Cursos.FirstOrDefault().Cantidad)</th>
+                    <th>@Html.DisplayNameFor(model => model.Cursos.FirstOrDefault().Precio)</th>
+                    <th>Editar | Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Cursos)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(model => item.Nombre)</td>
+                        <td>@Html.DisplayFor(model => item.Cantidad)</td>
+                        <td>@Html.DisplayFor(model => item.Precio)</td>
+                        <td>
+                            <button asp-route-id="@item.Id" asp-page-handler="Delete" onclick="return confirm('¿Estas seguro de que deseas eliminar el registro?')" class="btn btn-danger btn-sm">Borrar</button>
+                            <a asp-route-id="@item.Id" asp-page="Edit" class="btn btn-success btn-sm">Editar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <label>Total de cursos: @Model.Cursos.Count()</label>
+    }
+    else
+    {
+        <div class="alert alert-info">Aún no hay cursos disponibles</div>
+    }
+</form>
