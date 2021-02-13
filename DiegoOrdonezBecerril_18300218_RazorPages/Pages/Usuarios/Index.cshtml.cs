@@ -5,12 +5,12 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace DiegoOrdonezBecerril_18300218_RazorPages.Pages.Cursos
+namespace DiegoOrdonezBecerril_18300218_RazorPages.Pages.Usuarios
 {
     public class IndexModel : PageModel
     {
         private readonly ApplicationDbContext _db;
-        public IEnumerable<Curso> Cursos;
+        public IEnumerable<User> Usuarios;
 
         public IndexModel(ApplicationDbContext db)
         {
@@ -19,15 +19,15 @@ namespace DiegoOrdonezBecerril_18300218_RazorPages.Pages.Cursos
 
         public async Task OnGet()
         {
-            Cursos = await _db.Curso.ToListAsync();
+            Usuarios = await _db.User.ToListAsync();
         }
 
         public async Task<IActionResult> OnPostDelete(int id)
         {
-            var CursoDb = await _db.Curso.FindAsync(id);
-            if (CursoDb is Curso)
+            var UsuarioDb = await _db.User.FindAsync(id);
+            if (UsuarioDb is User)
             {
-                _db.Curso.Remove(CursoDb);
+                _db.User.Remove(UsuarioDb);
                 await _db.SaveChangesAsync();
                 return RedirectToPage("Index");
             }

@@ -1,0 +1,46 @@
+﻿@page
+@model DiegoOrdonezBecerril_18300218_RazorPages.Pages.ProfesorCursos.IndexModel
+@{
+    ViewData["Title"] = "Profesor <-> Curso";
+}
+
+<div class="container row">
+    <div class="col-6">
+        <h2 class="text-info">Listado de cursos por profesor</h2>
+    </div>
+    <div class="col-6 text-right">
+        <a asp-page="Create" class="btn btn-primary">Generar relación</a>
+    </div>
+</div>
+<form method="post">
+    @if (Model.ProfesoresToCursos.Count() > 0)
+    {
+        <br />
+        <table class="table table-striped border">
+            <thead>
+                <tr class="table-secondary">
+                    <th>@Html.DisplayNameFor(model => model.ProfesoresToCursos.FirstOrDefault().Profesor.Nombre)</th>
+                    <th>@Html.DisplayNameFor(model => model.ProfesoresToCursos.FirstOrDefault().Curso.Nombre)</th>
+                    <th>Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.ProfesoresToCursos)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(model => item.Profesor.Nombre)</td>
+                        <td>@Html.DisplayFor(model => item.Curso.Nombre)</td>
+                        <td>
+                            <button asp-route-profesor="@item.ProfesorId" asp-route-curso="@item.CursoId" asp-page-handler="Delete" onclick="return confirm('¿Estas seguro de que deseas eliminar el registro?')" class="btn btn-danger btn-sm">Borrar</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <label>Total de cursos impartidos por profesores: @Model.ProfesoresToCursos.Count()</label>
+    }
+    else
+    {
+        <div class="alert alert-info">Aún no hay cursos impartidos por profesores disponibles</div>
+    }
+</form>

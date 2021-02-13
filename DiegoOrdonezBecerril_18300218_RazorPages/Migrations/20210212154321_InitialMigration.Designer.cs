@@ -9,15 +9,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DiegoOrdonezBecerril_18300218_RazorPages.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210212004003_AddAllTables")]
-    partial class AddAllTables
+    [Migration("20210212154321_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasAnnotation("ProductVersion", "3.1.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.3")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("DiegoOrdonezBecerril_18300218_RazorPages.Models.Curso", b =>
@@ -51,8 +51,8 @@ namespace DiegoOrdonezBecerril_18300218_RazorPages.Migrations
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.HasKey("Id");
 
@@ -74,6 +74,35 @@ namespace DiegoOrdonezBecerril_18300218_RazorPages.Migrations
                     b.ToTable("ProfesorToCurso");
                 });
 
+            modelBuilder.Entity("DiegoOrdonezBecerril_18300218_RazorPages.Models.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("NombreUsuario")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("User");
+                });
+
             modelBuilder.Entity("DiegoOrdonezBecerril_18300218_RazorPages.Models.ProfesorToCurso", b =>
                 {
                     b.HasOne("DiegoOrdonezBecerril_18300218_RazorPages.Models.Curso", "Curso")
@@ -87,20 +116,6 @@ namespace DiegoOrdonezBecerril_18300218_RazorPages.Migrations
                         .HasForeignKey("ProfesorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Curso");
-
-                    b.Navigation("Profesor");
-                });
-
-            modelBuilder.Entity("DiegoOrdonezBecerril_18300218_RazorPages.Models.Curso", b =>
-                {
-                    b.Navigation("ProfesorToCursos");
-                });
-
-            modelBuilder.Entity("DiegoOrdonezBecerril_18300218_RazorPages.Models.Profesor", b =>
-                {
-                    b.Navigation("ProfesorToCursos");
                 });
 #pragma warning restore 612, 618
         }

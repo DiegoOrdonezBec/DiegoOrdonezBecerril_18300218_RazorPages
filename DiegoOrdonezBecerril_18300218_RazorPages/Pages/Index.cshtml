@@ -4,17 +4,20 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
-
-<section>
-    <p>Enter customer name</p>
+<div class="border">
+    <div class="text-center">
+        <h1 class="display-4">Welcome</h1>
+        <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    </div>
     <form method="post">
-        Name:
-        <input asp-for="Customer.Name"/><br />
-        <span asp-validation-for="Customer.Name" class="text-danger"></span><br />
-        <input type="submit" class="btn-primary"/>
+        <div class="container p-3">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-2 offset-sm-5">
+                        <input type="submit" value="Salir" class="btn btn-primary form-control" />
+                    </div>
+                </div>
+            </div>
+        </div>
     </form>
-</section>
+</div>

@@ -15,5 +15,18 @@ namespace DiegoOrdonezBecerril_18300218_RazorPages.Models
         [Key]
         public int CursoId { get; set; }
         public Curso Curso { get; set; }
+
+        public ProfesorToCurso()
+        {
+
+        }
+
+        public ProfesorToCurso(Profesor p, Curso c)
+        {
+            this.ProfesorId = p.Id;
+            this.Profesor = p;
+            this.CursoId = c.Id;
+            this.Curso = c;
+        }
     }
 }

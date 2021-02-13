@@ -1,53 +1,54 @@
 ﻿@page
-@model DiegoOrdonezBecerril_18300218_RazorPages.Pages.Cursos.CreateModel
+@model DiegoOrdonezBecerril_18300218_RazorPages.Pages.Usuarios.EditModel
 @{
-    ViewData["Title"] = "Crear curso";
+    ViewData["Title"] = "Editar usuarios";
 }
 
 <br />
-<h2 class="text-info">Crear nuevo curso</h2>
+<h2 class="text-info">Editar usuario</h2>
 
 <div class="border">
     <form method="post">
         <div asp-validation-summary="All" class="text-danger"></div>
+        <input type="hidden" asp-for="Usuario.Id"/>
         <div class="container p-3">
             <div class="form-group">
                 <div class="row">
                     <div class="offset-3 col-2">
-                        <label asp-for="Curso.Nombre"></label>
+                        <label asp-for="Usuario.Nombre"></label>
                     </div>
                     <div class="col-4">
-                        <input asp-for="Curso.Nombre" placeholder="Nombre del curso" class="form-control" />
+                        <input asp-for="Usuario.Nombre" placeholder="Nombre" class="form-control" />
                     </div>
-                    <span asp-validation-for="Curso.Nombre" class="text-danger"></span>
+                    <span asp-validation-for="Usuario.Nombre" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group">
                 <div class="row">
                     <div class="offset-3 col-2">
-                        <label asp-for="Curso.Cantidad"></label>
+                        <label asp-for="Usuario.NombreUsuario"></label>
                     </div>
                     <div class="col-4">
-                        <input asp-for="Curso.Cantidad" placeholder="Cantidad de clases" class="form-control" />
+                        <input asp-for="Usuario.NombreUsuario" placeholder="Nombre de usuario" class="form-control" />
                     </div>
-                    <span asp-validation-for="Curso.Cantidad" class="text-danger"></span>
+                    <span asp-validation-for="Usuario.NombreUsuario" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group">
                 <div class="row">
                     <div class="offset-3 col-2">
-                        <label asp-for="Curso.Precio"></label>
+                        <label asp-for="Usuario.Password"></label>
                     </div>
                     <div class="col-4">
-                        <input asp-for="Curso.Precio" placeholder="Precio" class="form-control" />
+                        <input asp-for="Usuario.Password" placeholder="Contraseña" class="form-control" />
                     </div>
-                    <span asp-validation-for="Curso.Precio" class="text-danger"></span>
+                    <span asp-validation-for="Usuario.Password" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group">
                 <div class="row">
                     <div class="offset-4 col-2">
-                        <input type="submit" value="Crear" class="btn btn-primary form-control" />
+                        <input type="submit" value="Guardar cambios" class="btn btn-primary form-control" />
                     </div>
                     <div class="col-2">
                         <a asp-page="Index" class="btn btn-success form-control">Regresar</a>

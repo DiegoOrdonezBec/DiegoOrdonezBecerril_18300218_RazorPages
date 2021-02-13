@@ -7,6 +7,7 @@ namespace DiegoOrdonezBecerril_18300218_RazorPages.Models
         public DbSet<Curso> Curso { get; set; }
         public DbSet<Profesor> Profesor { get; set; }
         public DbSet<User> User { get; set; }
+        public DbSet<ProfesorToCurso> ProfesorToCurso { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -20,12 +21,14 @@ namespace DiegoOrdonezBecerril_18300218_RazorPages.Models
             modelBuilder.Entity<ProfesorToCurso>()
                 .HasOne(x => x.Profesor)
                 .WithMany(x => x.ProfesorToCursos)
-                .HasForeignKey(x => x.ProfesorId);
+                .HasForeignKey(x => x.ProfesorId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<ProfesorToCurso>()
                .HasOne(x => x.Curso)
                .WithMany(x => x.ProfesorToCursos)
-               .HasForeignKey(x => x.CursoId);
+               .HasForeignKey(x => x.CursoId)
+               .OnDelete(DeleteBehavior.Cascade);
 
             base.OnModelCreating(modelBuilder);
         }
