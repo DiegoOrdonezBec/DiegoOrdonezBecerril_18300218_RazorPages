@@ -1,22 +1,25 @@
+using DiegoOrdonezBecerril_18300218_RazorPages.DataModels;
 using DiegoOrdonezBecerril_18300218_RazorPages.Models;
+using Firebase.Database;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace DiegoOrdonezBecerril_18300218_RazorPages.Pages.Profesores
 {
     public class CreateModel : PageModel
     {
-        public readonly ApplicationDbContext _db;
-        [BindProperty]
-        public Profesor Profesor { get; set; }
+        private readonly FirebaseClient firebaseClient;
         public SelectList OpcionesSexo;
+        [BindProperty]
+        public ProfesorF ProfesorF { get; set; }
 
-        public CreateModel(ApplicationDbContext db)
+        public CreateModel(FirebaseClient firebaseClient)
         {
-            _db = db;
+            this.firebaseClient = firebaseClient;
 
             List<string> opciones = new List<string>();
 
@@ -35,8 +38,7 @@ namespace DiegoOrdonezBecerril_18300218_RazorPages.Pages.Profesores
         {
             if (ModelState.IsValid)
             {
-                _db.Add(Profesor);
-                await _db.SaveChangesAsync();
+                await firebaseClient.Child("Profesor").PostAsync(JsonSerializer.Serialize<ProfesorF>(ProfesorF));
                 return RedirectToPage("Index");
             }
             else

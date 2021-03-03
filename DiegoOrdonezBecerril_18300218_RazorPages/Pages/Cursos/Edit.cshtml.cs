@@ -1,9 +1,7 @@
-using DiegoOrdonezBecerril_18300218_RazorPages.Data;
-using DiegoOrdonezBecerril_18300218_RazorPages.Models;
+using DiegoOrdonezBecerril_18300218_RazorPages.DataModels;
 using Firebase.Database;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -11,7 +9,7 @@ namespace DiegoOrdonezBecerril_18300218_RazorPages.Pages.Cursos
 {
     public class EditModel : PageModel
     {
-        public readonly FirebaseClient firebaseClient;
+        private readonly FirebaseClient firebaseClient;
         [BindProperty]
         public CursoF CursoF { get; set; }
 

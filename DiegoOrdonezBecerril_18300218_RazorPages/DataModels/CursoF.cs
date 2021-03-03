@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace DiegoOrdonezBecerril_18300218_RazorPages.Data
+namespace DiegoOrdonezBecerril_18300218_RazorPages.DataModels
 {
     public class CursoF
     {

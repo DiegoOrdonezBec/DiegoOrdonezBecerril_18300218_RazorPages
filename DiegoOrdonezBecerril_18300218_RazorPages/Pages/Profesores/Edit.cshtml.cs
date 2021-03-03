@@ -1,22 +1,25 @@
+using DiegoOrdonezBecerril_18300218_RazorPages.DataModels;
 using DiegoOrdonezBecerril_18300218_RazorPages.Models;
+using Firebase.Database;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace DiegoOrdonezBecerril_18300218_RazorPages.Pages.Profesores
 {
     public class EditModel : PageModel
     {
-        public readonly ApplicationDbContext _db;
+        private readonly FirebaseClient firebaseClient;
         [BindProperty]
-        public Profesor Profesor { get; set; }
+        public ProfesorF ProfesorF { get; set; }
         public SelectList OpcionesSexo;
 
-        public EditModel(ApplicationDbContext db)
+        public EditModel(ApplicationDbContext db, FirebaseClient firebaseClient)
         {
-            _db = db;
+            this.firebaseClient = firebaseClient;
 
             List<string> opciones = new List<string>();
 
@@ -26,22 +29,17 @@ namespace DiegoOrdonezBecerril_18300218_RazorPages.Pages.Profesores
             OpcionesSexo = new SelectList(opciones);
         }
 
-        public async Task OnGet(int id)
+        public async Task OnGet(string key)
         {
-            Profesor = await _db.Profesor.FindAsync(id);
+            ProfesorF = await firebaseClient.Child("Profesor/" + key).OnceSingleAsync<ProfesorF>();
+            ProfesorF.Key = key;
         }
 
         public async Task<IActionResult> OnPost()
         {
             if (ModelState.IsValid)
             {
-                var ProfesorDb = await _db.Profesor.FindAsync(Profesor.Id);
-                
-                ProfesorDb.Nombre = Profesor.Nombre;
-                ProfesorDb.FechaNacimiento = Profesor.FechaNacimiento;
-                ProfesorDb.Sexo = Profesor.Sexo;
-
-                await _db.SaveChangesAsync();
+                await firebaseClient.Child("Profesor/" + ProfesorF.Key + "/").PutAsync(JsonSerializer.Serialize<ProfesorF>(ProfesorF));
                 return RedirectToPage("Index");
             }
             else

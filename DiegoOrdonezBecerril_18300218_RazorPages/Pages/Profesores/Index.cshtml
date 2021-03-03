@@ -13,34 +13,34 @@
     </div>
 </div>
 <form method="post">
-    @if (Model.Profesores.Count() > 0)
+    @if (Model.ProfesoresF.Count() > 0)
     {
         <br />
         <table class="table table-striped border">
             <thead>
                 <tr class="table-secondary">
-                    <th>@Html.DisplayNameFor(model => model.Profesores.FirstOrDefault().Nombre)</th>
-                    <th>@Html.DisplayNameFor(model => model.Profesores.FirstOrDefault().FechaNacimiento)</th>
-                    <th>@Html.DisplayNameFor(model => model.Profesores.FirstOrDefault().Sexo)</th>
+                    <th>@Html.DisplayNameFor(model => model.ProfesoresF.FirstOrDefault().Nombre)</th>
+                    <th>@Html.DisplayNameFor(model => model.ProfesoresF.FirstOrDefault().FechaNacimiento)</th>
+                    <th>@Html.DisplayNameFor(model => model.ProfesoresF.FirstOrDefault().Sexo)</th>
                     <th>Editar | Eliminar</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.Profesores)
+                @foreach (var item in Model.ProfesoresF)
                 {
                     <tr>
                         <td>@Html.DisplayFor(model => item.Nombre)</td>
                         <td>@Html.DisplayFor(model => item.FechaNacimiento)</td>
                         <td>@Html.DisplayFor(model => item.Sexo)</td>
                         <td>
-                            <button asp-route-id="@item.Id" asp-page-handler="Delete" onclick="return confirm('¿Estas seguro de que deseas eliminar el registro?')" class="btn btn-danger btn-sm">Borrar</button>
-                            <a asp-route-id="@item.Id" asp-page="Edit" class="btn btn-success btn-sm">Editar</a>
+                            <button asp-route-key="@item.Key" asp-page-handler="Delete" onclick="return confirm('¿Estas seguro de que deseas eliminar el registro?')" class="btn btn-danger btn-sm">Borrar</button>
+                            <a asp-route-key="@item.Key" asp-page="Edit" class="btn btn-success btn-sm">Editar</a>
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
-        <label>Total de profesores: @Model.Profesores.Count()</label>
+        <label>Total de profesores: @Model.ProfesoresF.Count()</label>
     }
     else
     {

@@ -26,6 +26,8 @@ namespace DiegoOrdonezBecerril_18300218_RazorPages
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            FirebaseClient firebaseClient = new FirebaseClient("https://razorpages-2e51d-default-rtdb.firebaseio.com/");
+
             services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
@@ -33,10 +35,7 @@ namespace DiegoOrdonezBecerril_18300218_RazorPages
 
             services.AddRazorPages();
 
-            services.AddSingleton<FirebaseClient, FirebaseClient>(ServiceProvider => 
-            {
-                return new FirebaseClient("https://razorpages-2e51d-default-rtdb.firebaseio.com/");
-            });
+            services.AddSingleton<FirebaseClient>(firebaseClient);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,4 +1,6 @@
+using DiegoOrdonezBecerril_18300218_RazorPages.DataModels;
 using DiegoOrdonezBecerril_18300218_RazorPages.Models;
+using Firebase.Database;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -9,32 +11,31 @@ namespace DiegoOrdonezBecerril_18300218_RazorPages.Pages.Profesores
 {
     public class IndexModel : PageModel
     {
-        private readonly ApplicationDbContext _db;
-        public IEnumerable<Profesor> Profesores;
+        private readonly FirebaseClient firebaseClient;
+        public List<ProfesorF> ProfesoresF;
 
-        public IndexModel(ApplicationDbContext db)
+        public IndexModel(FirebaseClient firebaseClient)
         {
-            _db = db;
+            this.firebaseClient = firebaseClient;
+            ProfesoresF = new List<ProfesorF>();
         }
 
         public async Task OnGet()
         {
-            Profesores = await _db.Profesor.ToListAsync();
+            IReadOnlyCollection<FirebaseObject<ProfesorF>> profesoresF = await firebaseClient.Child("Profesor").OnceAsync<ProfesorF>();
+
+            foreach (FirebaseObject<ProfesorF> firebaseObject in profesoresF)
+            {
+                ProfesorF profesorF = firebaseObject.Object;
+                profesorF.Key = firebaseObject.Key;
+                ProfesoresF.Add(profesorF);
+            }
         }
 
-        public async Task<IActionResult> OnPostDelete(int id)
+        public async Task<IActionResult> OnPostDelete(string key)
         {
-            var ProfesorDb = await _db.Profesor.FindAsync(id);
-            if (ProfesorDb is Profesor)
-            {
-                _db.Profesor.Remove(ProfesorDb);
-                await _db.SaveChangesAsync();
-                return RedirectToPage("Index");
-            }
-            else
-            {
-                return NotFound();
-            }
+            await firebaseClient.Child("Profesor/" + key + "/").DeleteAsync();
+            return RedirectToPage("Index");
         }
     }
 }
