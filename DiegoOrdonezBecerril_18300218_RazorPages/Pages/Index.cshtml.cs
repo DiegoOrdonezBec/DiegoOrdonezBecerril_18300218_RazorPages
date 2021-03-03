@@ -8,7 +8,7 @@ namespace DiegoOrdonezBecerril_18300218_RazorPages.Pages
 {
     public class IndexModel : PageModel
     {
-        public async Task OnGet()
+        public void OnGet()
         {
             
         }
