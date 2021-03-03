@@ -1,33 +1,54 @@
+using DiegoOrdonezBecerril_18300218_RazorPages.DataModels;
 using DiegoOrdonezBecerril_18300218_RazorPages.Models;
+using Firebase.Database;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace DiegoOrdonezBecerril_18300218_RazorPages.Pages.ProfesorCursos
 {
     public class CreateModel : PageModel
     {
-        public readonly ApplicationDbContext _db;
+        private readonly FirebaseClient firebaseClient;
         [BindProperty]
-        public ProfesorToCurso ProfesorToCurso { get; set; }
+        public ProfesorFToCursoF ProfesorFToCursoF { get; set; }
         public SelectList Profesores { get; set; }
         public SelectList Cursos { get; set; }
 
-        public CreateModel(ApplicationDbContext db)
+        public CreateModel(FirebaseClient firebaseClient)
         {
-            _db = db;
-
-            var listProfesores = _db.Profesor.ToList();
-            var listCursos = _db.Curso.ToList();
-
-            Profesores = new SelectList(listProfesores, nameof(Profesor.Id), nameof(Profesor.Nombre));
-            Cursos = new SelectList(listCursos, nameof(Curso.Id), nameof(Curso.Nombre));
+            this.firebaseClient = firebaseClient;
         }
 
-        public IActionResult OnGet()
+        public async Task<IActionResult> OnGet()
         {
+            List<ProfesorF> profesoresF = new List<ProfesorF>();
+            List<CursoF> cursosF = new List<CursoF>();
+
+            IReadOnlyCollection<FirebaseObject<ProfesorF>> profesores = await firebaseClient.Child("Profesor").OnceAsync<ProfesorF>();
+            IReadOnlyCollection<FirebaseObject<CursoF>> cursos = await firebaseClient.Child("Curso").OnceAsync<CursoF>();
+
+            foreach (FirebaseObject<ProfesorF> firebaseObject in profesores)
+            {
+                ProfesorF profesorF = firebaseObject.Object;
+                profesorF.Key = firebaseObject.Key;
+                profesoresF.Add(profesorF);
+            }
+
+            foreach (FirebaseObject<CursoF> firebaseObject in cursos)
+            {
+                CursoF cursoF = firebaseObject.Object;
+                cursoF.Key = firebaseObject.Key;
+                cursosF.Add(cursoF);
+            }
+
+            Profesores = new SelectList(profesoresF, nameof(ProfesorF.Key), nameof(ProfesorF.Nombre));
+            Cursos = new SelectList(cursosF, nameof(CursoF.Key), nameof(CursoF.Nombre));
+
             return Page();
         }
 
@@ -35,18 +56,15 @@ namespace DiegoOrdonezBecerril_18300218_RazorPages.Pages.ProfesorCursos
         {
             if (ModelState.IsValid)
             {
-                int isInDb = _db.ProfesorToCurso.Where(p2c => p2c.ProfesorId == ProfesorToCurso.ProfesorId && p2c.CursoId == ProfesorToCurso.CursoId).Count();
-                if (isInDb == 0)
-                {
-                    _db.Add(ProfesorToCurso);
-                    await _db.SaveChangesAsync();
-                    return RedirectToPage("Index");
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Ese curso ya es impartido por ese profesor");
-                    return Page();
-                }
+                ProfesorF profesorF = await firebaseClient.Child("Profesor/" + ProfesorFToCursoF.KeyProfesor).OnceSingleAsync<ProfesorF>();
+                CursoF cursoF = await firebaseClient.Child("Curso/" + ProfesorFToCursoF.KeyCurso).OnceSingleAsync<CursoF>();
+
+                ProfesorFToCursoF.NombreProfesor = profesorF.Nombre;
+                ProfesorFToCursoF.NombreCurso = cursoF.Nombre;
+
+                await firebaseClient.Child("ProfesorToCurso").PostAsync(JsonSerializer.Serialize<ProfesorFToCursoF>(ProfesorFToCursoF));
+
+                return RedirectToPage("Index");
             }
             else
             {

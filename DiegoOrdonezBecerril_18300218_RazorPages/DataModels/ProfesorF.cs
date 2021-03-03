@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace DiegoOrdonezBecerril_18300218_RazorPages.DataModels
 {
@@ -22,6 +20,5 @@ namespace DiegoOrdonezBecerril_18300218_RazorPages.DataModels
         [Required]
         [StringLength(20)]
         public string Sexo { get; set; }
-        public List<string> Cursos;
     }
 }

@@ -13,31 +13,31 @@
     </div>
 </div>
 <form method="post">
-    @if (Model.ProfesoresToCursos.Count() > 0)
+    @if (Model.ProfesoresFToCursosF.Count() > 0)
     {
         <br />
         <table class="table table-striped border">
             <thead>
                 <tr class="table-secondary">
-                    <th>@Html.DisplayNameFor(model => model.ProfesoresToCursos.FirstOrDefault().Profesor.Nombre)</th>
-                    <th>@Html.DisplayNameFor(model => model.ProfesoresToCursos.FirstOrDefault().Curso.Nombre)</th>
+                    <th>@Html.DisplayNameFor(model => model.ProfesoresFToCursosF.FirstOrDefault().NombreProfesor)</th>
+                    <th>@Html.DisplayNameFor(model => model.ProfesoresFToCursosF.FirstOrDefault().NombreCurso)</th>
                     <th>Eliminar</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.ProfesoresToCursos)
+                @foreach (var item in Model.ProfesoresFToCursosF)
                 {
                     <tr>
-                        <td>@Html.DisplayFor(model => item.Profesor.Nombre)</td>
-                        <td>@Html.DisplayFor(model => item.Curso.Nombre)</td>
+                        <td>@Html.DisplayFor(model => item.NombreProfesor)</td>
+                        <td>@Html.DisplayFor(model => item.NombreCurso)</td>
                         <td>
-                            <button asp-route-profesor="@item.ProfesorId" asp-route-curso="@item.CursoId" asp-page-handler="Delete" onclick="return confirm('¿Estas seguro de que deseas eliminar el registro?')" class="btn btn-danger btn-sm">Borrar</button>
+                            <button asp-route-key="@item.Key" asp-page-handler="Delete" onclick="return confirm('¿Estas seguro de que deseas eliminar el registro?')" class="btn btn-danger btn-sm">Borrar</button>
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
-        <label>Total de cursos impartidos por profesores: @Model.ProfesoresToCursos.Count()</label>
+        <label>Total de cursos impartidos por profesores: @Model.ProfesoresFToCursosF.Count()</label>
     }
     else
     {

@@ -17,7 +17,7 @@ namespace DiegoOrdonezBecerril_18300218_RazorPages.Pages.Profesores
         public ProfesorF ProfesorF { get; set; }
         public SelectList OpcionesSexo;
 
-        public EditModel(ApplicationDbContext db, FirebaseClient firebaseClient)
+        public EditModel(FirebaseClient firebaseClient)
         {
             this.firebaseClient = firebaseClient;
 
