@@ -13,37 +13,31 @@ namespace DiegoOrdonezBecerril_18300218_RazorPages.Pages.Cursos
 {
     public class IndexModel : PageModel
     {
-        private readonly FirebaseClient FirebaseClient;
-        private readonly ApplicationDbContext _db;
-        public IEnumerable<Curso> Cursos;
+        private readonly FirebaseClient firebaseClient;
+        public List<CursoF> CursosF;
 
-        public IndexModel(ApplicationDbContext db, FirebaseClient firebaseClient)
+        public IndexModel(FirebaseClient firebaseClient)
         {
-            _db = db;
-            FirebaseClient = firebaseClient;
+            this.firebaseClient = firebaseClient;
+            CursosF = new List<CursoF>();
         }
 
         public async Task OnGet()
-        {
-            Cursos = await _db.Curso.ToListAsync();
-            IReadOnlyCollection<FirebaseObject<CursoF>> lista = await FirebaseClient.Child("Cursos").OnceAsync<CursoF>();
-            var curso = new CursoF();
-            await FirebaseClient.Child("Cursos").PostAsync(JsonSerializer.Serialize(curso));
+        {   
+            IReadOnlyCollection<FirebaseObject<CursoF>> cursosF = await firebaseClient.Child("Curso").OnceAsync<CursoF>();
+            
+            foreach (FirebaseObject<CursoF> firebaseObject in cursosF)
+            {
+                CursoF cursoF = firebaseObject.Object;
+                cursoF.Key = firebaseObject.Key;
+                CursosF.Add(cursoF);
+            }
         }
 
-        public async Task<IActionResult> OnPostDelete(int id)
+        public async Task<IActionResult> OnPostDelete(string key)
         {
-            var CursoDb = await _db.Curso.FindAsync(id);
-            if (CursoDb is Curso)
-            {
-                _db.Curso.Remove(CursoDb);
-                await _db.SaveChangesAsync();
-                return RedirectToPage("Index");
-            }
-            else
-            {
-                return NotFound();
-            }
+            await firebaseClient.Child("Curso/" + key + "/").DeleteAsync();
+            return RedirectToPage("Index");
         }
     }
 }

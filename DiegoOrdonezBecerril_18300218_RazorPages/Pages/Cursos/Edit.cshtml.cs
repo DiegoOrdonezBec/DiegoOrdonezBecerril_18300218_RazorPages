@@ -1,37 +1,36 @@
+using DiegoOrdonezBecerril_18300218_RazorPages.Data;
 using DiegoOrdonezBecerril_18300218_RazorPages.Models;
+using Firebase.Database;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace DiegoOrdonezBecerril_18300218_RazorPages.Pages.Cursos
 {
     public class EditModel : PageModel
     {
-        public readonly ApplicationDbContext _db;
+        public readonly FirebaseClient firebaseClient;
         [BindProperty]
-        public Curso Curso { get; set; }
+        public CursoF CursoF { get; set; }
 
-        public EditModel(ApplicationDbContext db)
+        public EditModel(FirebaseClient firebaseClient)
         {
-            _db = db;
+            this.firebaseClient = firebaseClient;
         }
 
-        public async Task OnGet(int id)
+        public async Task OnGet(string key)
         {
-            Curso = await _db.Curso.FindAsync(id);
+            CursoF = await firebaseClient.Child("Curso/" + key).OnceSingleAsync<CursoF>();
+            CursoF.Key = key;
         }
 
         public async Task<IActionResult> OnPost()
         {
             if (ModelState.IsValid)
             {
-                var CursoDb = await _db.Curso.FindAsync(Curso.Id);
-                
-                CursoDb.Nombre = Curso.Nombre;
-                CursoDb.Cantidad = Curso.Cantidad;
-                CursoDb.Precio = Curso.Precio;
-                
-                await _db.SaveChangesAsync();
+                await firebaseClient.Child("Curso/" + CursoF.Key + "/").PutAsync(JsonSerializer.Serialize<CursoF>(CursoF));
                 return RedirectToPage("Index");
             }
             else

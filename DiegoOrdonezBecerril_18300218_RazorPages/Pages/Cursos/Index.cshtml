@@ -13,34 +13,34 @@
     </div>
 </div>
 <form method="post">
-    @if (Model.Cursos.Count() > 0)
+    @if (Model.CursosF.Count() > 0)
     {
         <br />
         <table class="table table-striped border">
             <thead>
                 <tr class="table-secondary">
-                    <th>@Html.DisplayNameFor(model => model.Cursos.FirstOrDefault().Nombre)</th>
-                    <th>@Html.DisplayNameFor(model => model.Cursos.FirstOrDefault().Cantidad)</th>
-                    <th>@Html.DisplayNameFor(model => model.Cursos.FirstOrDefault().Precio)</th>
+                    <th>@Html.DisplayNameFor(model => model.CursosF.FirstOrDefault().Nombre)</th>
+                    <th>@Html.DisplayNameFor(model => model.CursosF.FirstOrDefault().Cantidad)</th>
+                    <th>@Html.DisplayNameFor(model => model.CursosF.FirstOrDefault().Precio)</th>
                     <th>Editar | Eliminar</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.Cursos)
+                @foreach (var item in Model.CursosF)
                 {
                     <tr>
                         <td>@Html.DisplayFor(model => item.Nombre)</td>
                         <td>@Html.DisplayFor(model => item.Cantidad)</td>
                         <td>@Html.DisplayFor(model => item.Precio)</td>
                         <td>
-                            <button asp-route-id="@item.Id" asp-page-handler="Delete" onclick="return confirm('¿Estas seguro de que deseas eliminar el registro?')" class="btn btn-danger btn-sm">Borrar</button>
-                            <a asp-route-id="@item.Id" asp-page="Edit" class="btn btn-success btn-sm">Editar</a>
+                            <button asp-route-key="@item.Key" asp-page-handler="Delete" onclick="return confirm('¿Estas seguro de que deseas eliminar el registro?')" class="btn btn-danger btn-sm">Borrar</button>
+                            <a asp-route-key="@item.Key" asp-page="Edit" class="btn btn-success btn-sm">Editar</a>
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
-        <label>Total de cursos: @Model.Cursos.Count()</label>
+        <label>Total de cursos: @Model.CursosF.Count()</label>
     }
     else
     {

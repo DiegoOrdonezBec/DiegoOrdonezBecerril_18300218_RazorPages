@@ -1,19 +1,22 @@
+using DiegoOrdonezBecerril_18300218_RazorPages.Data;
 using DiegoOrdonezBecerril_18300218_RazorPages.Models;
+using Firebase.Database;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace DiegoOrdonezBecerril_18300218_RazorPages.Pages.Cursos
 {
     public class CreateModel : PageModel
     {
-        public readonly ApplicationDbContext _db;
+        public readonly FirebaseClient firebaseClient;
         [BindProperty]
-        public Curso Curso { get; set; }
+        public CursoF CursoF { get; set; }
 
-        public CreateModel(ApplicationDbContext db)
+        public CreateModel(FirebaseClient firebaseClient)
         {
-            _db = db;
+            this.firebaseClient = firebaseClient;
         }
 
         public IActionResult OnGet()
@@ -25,8 +28,7 @@ namespace DiegoOrdonezBecerril_18300218_RazorPages.Pages.Cursos
         {
             if (ModelState.IsValid)
             {
-                _db.Add(Curso);
-                await _db.SaveChangesAsync();
+                await firebaseClient.Child("Curso").PostAsync(JsonSerializer.Serialize<CursoF>(CursoF));
                 return RedirectToPage("Index");
             }
             else
