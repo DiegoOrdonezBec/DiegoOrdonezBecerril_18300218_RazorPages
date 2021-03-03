@@ -1,9 +1,7 @@
 using DiegoOrdonezBecerril_18300218_RazorPages.DataModels;
-using DiegoOrdonezBecerril_18300218_RazorPages.Models;
 using Firebase.Database;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

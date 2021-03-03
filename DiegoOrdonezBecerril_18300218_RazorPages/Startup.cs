@@ -1,16 +1,9 @@
-using DiegoOrdonezBecerril_18300218_RazorPages.Models;
 using Firebase.Database;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
 
 namespace DiegoOrdonezBecerril_18300218_RazorPages
 {
@@ -27,11 +20,6 @@ namespace DiegoOrdonezBecerril_18300218_RazorPages
         public void ConfigureServices(IServiceCollection services)
         {
             FirebaseClient firebaseClient = new FirebaseClient("https://razorpages-2e51d-default-rtdb.firebaseio.com/");
-
-            services.AddDbContext<ApplicationDbContext>(options =>
-            {
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-            });   
 
             services.AddRazorPages();
 
