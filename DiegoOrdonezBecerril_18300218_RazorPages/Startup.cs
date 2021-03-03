@@ -1,4 +1,5 @@
 using DiegoOrdonezBecerril_18300218_RazorPages.Models;
+using Firebase.Database;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,27 +29,14 @@ namespace DiegoOrdonezBecerril_18300218_RazorPages
             services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-            });
+            });   
 
-            services.AddAuthentication(options =>
+            services.AddRazorPages();
+
+            services.AddSingleton<FirebaseClient, FirebaseClient>(ServiceProvider => 
             {
-                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            }).AddCookie(options =>
-            {
-                options.LoginPath = new PathString("/Auth/Login");
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(5.0);
+                return new FirebaseClient("https://razorpages-2e51d-default-rtdb.firebaseio.com/");
             });
-
-            services.AddRazorPages(options =>
-            {
-                options.Conventions.AuthorizeFolder("/");
-                options.Conventions.AllowAnonymousToPage("/Auth/Login");
-                options.Conventions.AllowAnonymousToPage("/Auth/Signup");
-            });
-
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -70,7 +58,6 @@ namespace DiegoOrdonezBecerril_18300218_RazorPages
 
             app.UseRouting();
 
-            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

@@ -12,12 +12,5 @@ namespace DiegoOrdonezBecerril_18300218_RazorPages.Pages
         {
             
         }
-
-        public async Task<IActionResult> OnPost()
-        {
-            var authenticationManager = Request.HttpContext;
-            await authenticationManager.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToPage("/Auth/Login");
-        }
     }
 }
